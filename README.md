@@ -1,0 +1,2 @@
+# CompressionBench
+Compression benchmark suite
