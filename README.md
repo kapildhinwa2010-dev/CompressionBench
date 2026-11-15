@@ -1,1 +1,41 @@
-# CompressionBench\n\nBenchmark weight-compression methods: reconstruction error vs estimated storage.\n\n## What it does\n\nRuns four compression strategies on a matrix - SVD rank-4, 8-bit\nquantization, a 1-D Fourier fit per column, and hybrid SVD+quantize - and\nreports relative reconstruction error, an estimated storage size and the\nimplied compression ratio for each.\n\n    from compressionbench import benchmark\n\n    for row in benchmark(W):\n        print(row["method"], row["relative_error"], row["compression_ratio"])\n\n## API\n\n- svd_compress(matrix, rank) - truncated SVD reconstruction\n- quantize(matrix, bits) - uniform quantization round-trip\n- fourier_compress(matrix, num_coeffs) - 1-D Fourier basis fit per column\n- hybrid_compress(matrix, rank, bits) - SVD then quantize\n- benchmark(matrix) - one row per method with error, storage, ratio\n\n## Honest results and limitations\n\n- Storage numbers are parameter-count estimates (e.g. rank times shape for\n  SVD), not measured serialized file sizes; real formats add headers and\n  entropy coding.\n- Errors are relative Frobenius-norm errors against the given matrix only;\n  nothing here predicts downstream model accuracy after compression.\n- Fixed defaults (rank 4, 8 bits, 4 coefficients) favour smooth matrices;\n  on random matrices every method shows large error.\n\n## Status\n\nPart of the kapildhinwa2010-dev toolkit experiments. CI and CodeQL run on\nevery push to main. License: MIT.\n
+# CompressionBench
+
+[![CI](https://github.com/kapildhinwa2010-dev/CompressionBench/actions/workflows/ci.yml/badge.svg)](https://github.com/kapildhinwa2010-dev/CompressionBench/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/kapildhinwa2010-dev/CompressionBench/actions/workflows/codeql.yml/badge.svg)](https://github.com/kapildhinwa2010-dev/CompressionBench/actions/workflows/codeql.yml)
+
+Benchmark weight-compression methods: reconstruction error vs estimated storage.
+
+## What it does
+
+Runs four compression strategies on a matrix - SVD rank-4, 8-bit
+quantization, a 1-D Fourier fit per column, and hybrid SVD+quantize - and
+reports relative reconstruction error, an estimated storage size and the
+implied compression ratio for each.
+
+    from compressionbench import benchmark
+
+    for row in benchmark(W):
+        print(row["method"], row["relative_error"], row["compression_ratio"])
+
+## API
+
+- svd_compress(matrix, rank) - truncated SVD reconstruction
+- quantize(matrix, bits) - uniform quantization round-trip
+- fourier_compress(matrix, num_coeffs) - 1-D Fourier basis fit per column
+- hybrid_compress(matrix, rank, bits) - SVD then quantize
+- benchmark(matrix) - one row per method with error, storage, ratio
+
+## Honest results and limitations
+
+- Storage numbers are parameter-count estimates (e.g. rank times shape for
+  SVD), not measured serialized file sizes; real formats add headers and
+  entropy coding.
+- Errors are relative Frobenius-norm errors against the given matrix only;
+  nothing here predicts downstream model accuracy after compression.
+- Fixed defaults (rank 4, 8 bits, 4 coefficients) favour smooth matrices;
+  on random matrices every method shows large error.
+
+## Status
+
+Part of the kapildhinwa2010-dev toolkit experiments. CI and CodeQL run on
+every push to main. License: MIT.
